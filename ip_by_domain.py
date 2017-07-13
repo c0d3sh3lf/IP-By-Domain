@@ -4,8 +4,13 @@ import socket, optparse, sys
 
 
 def get_ip(domain_name=""):
-    print "[+] Processing '%s'"%(domain_name)
-    return socket.gethostbyname(domain_name)
+    try:
+        ip_addr = socket.gethostbyname(domain_name)
+        print "[+] Processed '%s'" % (domain_name)
+    except:
+        ip_addr = ""
+        print "[-] Error processing '%s'" % (domain_name)
+    return ip_addr
 
 
 def generate_csv_data(inputfile=""):
@@ -21,7 +26,7 @@ def write_to_csv(csvfile="", data={}):
     csv = open(csvfile, "w")
     csv_data = "DOMAIN,IP ADDRESS\n"
     for domain in data.keys():
-        csv_data += domain + "," + data[domain] +"\n"
+        csv_data += domain + "," + str(data[domain]) +"\n"
     csv.write(csv_data)
     csv.flush()
     csv.close()
